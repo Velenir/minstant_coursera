@@ -1,0 +1,37 @@
+/* CSS declarations go here */
+
+.user_avatar{
+	min-height:100px;
+	text-align: center;
+
+}
+.avatar_img{
+	height:75px;
+}
+
+.incomment_avatar {
+	height: 2em;
+}
+
+.comment_bubble {
+	display: inline-block;
+	background-color: bisque;
+	margin-bottom: 5px;
+}
+
+.comment_body:not(:last-of-type) {
+	border-bottom: 1px solid #EEE;
+}
+
+.input[name="chat"]{
+	min-width: 40%;
+}
+
+.emoticons_panel .emoji {
+	cursor: pointer;
+}
+
+.emoticons_panel .spinner-container {
+    position: relative;
+    height: 60px;
+}

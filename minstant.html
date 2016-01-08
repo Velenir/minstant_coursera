@@ -1,0 +1,124 @@
+<head>
+  <title>minstant</title>
+</head>
+
+<body>
+</body>
+
+<!-- this is the main template used by iron:router to build the page -->
+<template name="ApplicationLayout">
+	{{> yield "header"}}
+
+	<div class="container">
+	{{> yield "main"}}
+	</div>
+</template>
+
+<!-- top level template for the nav bar -->
+<template name="navbar">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        Minstant!
+      </a>
+    </div>
+    <div class="nav navbar-nav">
+    {{> loginButtons}}
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="https://github.com/Velenir/minstant_coursera" class="navbar-link"><img src="/GitHub-Mark-32px.png" alt="repository"></a></li>
+		</ul>
+  </div>
+</nav>
+</template>
+
+<!-- Top level template for the lobby page -->
+<template name="lobby_page">
+	{{> available_user_list}}
+</template>
+
+<!-- display a list of users -->
+<template name="available_user_list">
+	<h2>Choose someone to chat with:</h2>
+	<div class="row">
+	{{#each users}}
+	{{> available_user}}
+	{{/each}}
+</div>
+</template>
+
+<!-- display an individual user -->
+<template name="available_user">
+	<div class="col-md-2">
+		<div class="user_avatar">
+			{{#if isMyUser _id}}
+			<div class="bg-success">{{getUsername _id}} (YOU)
+				<br/>
+				<img src="/{{profile.avatar}}" class="avatar_img">
+			</div>
+			{{else}}
+			<a href="/chat/{{_id}}">
+				{{getUsername _id}}
+				<br/>
+				<img src="/{{profile.avatar}}" class="avatar_img">
+			</a>
+			{{/if}}
+		</div>
+	</div>
+</template>
+
+<template name="must_login">
+	<h2>You must log in first.</h2>
+</template>
+
+<!-- Top level template for the chat page -->
+<template name="chat_page">
+	<h2>Type in the box below to send a message!</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="well well-lg">
+			{{#each messages}}
+				{{> chat_message}}
+			{{/each}}
+			</div>
+		</div>
+	</div>
+  <div class="row">
+		<div class="col-md-12">
+			<form class="js-send-chat">
+				{{ > emoji ':speech_balloon:'}}
+				<input class="input" type="text" name="chat" placeholder="type a message here...">
+				<button class="btn btn-default">send</button>
+			</form>
+			<br>
+			{{> emoticons}}
+		</div>
+	</div>
+</template>
+
+<!-- simple template that displays a message -->
+<template name="chat_message">
+	<!-- Task 1 Start -->
+	<div class="{{#unless isMyUser commenterId}}text-right{{/unless}} comment_body">
+		<div class="comment_bubble well well-sm"><img src="/{{getAvatar}}" alt="{{getUsername}}" class="incomment_avatar"/>
+		: {{#emoji}}{{text}}{{/emoji}}</div>
+ </div>
+	 <!-- Task 1 End -->
+	<!-- <br> -->
+</template>
+
+<!-- emoticons template -->
+<template name="emoticons">
+	<button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#collapsed_panel" aria-expanded="false">
+  Help yourself to these emoticons <span class="caret"></span>
+</button><br><br>
+	<div class="collapse emoticons_panel well well-sm" id="collapsed_panel">
+		<!-- hide emojis when images aren't fully loaded -->
+		<!-- can't just cut it out of the DOM, or imges won't be loading -->
+		<div style="{{#unless emojisReady}}display: none;{{/unless}}">{{{emojiSet}}}</div>
+    {{#unless emojisReady}}
+      {{> spinner}}
+    {{/unless}}
+	</div>
+</template>
